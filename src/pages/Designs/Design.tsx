@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState, } from "react";
 import {  useNavigate, useParams } from "react-router-dom";
 import DesignWithData from "./components/DesignWithData";
 import Logo from "./Logo";
@@ -15,7 +15,6 @@ function Design() {
   const [processor, setProcessor] = useState({ designing: false, thinking: false });
   const [chatOpen, setChatOpen] = useState(true);
 
-  const hasDesign = designInfo
   const navigate = useNavigate()
   
   if (id && !designInfo && !gettingDesignInfo)
@@ -44,14 +43,14 @@ function Design() {
       <Logo />
       
 
-      {!hasDesign ? (
+      {!designInfo ||  !id ? (
         <DesignEmptyState
           processor={processor}
           setProcessor={setProcessor}
         
         />
       ) : (
-        <DesignWithData data={designInfo} chatOpen={chatOpen} setChatOpen={setChatOpen} designId={id} />
+        <DesignWithData data={designInfo} chatOpen={chatOpen} setChatOpen={setChatOpen} designId={id}/>
       )}
     </div>
   );

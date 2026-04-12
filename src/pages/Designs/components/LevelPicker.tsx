@@ -6,7 +6,13 @@ const LEVELS = [
   { label: "High", value: "advanced" }
 ];
 
-export default function LevelPicker({ level, setLevel }) {
+export default function LevelPicker({
+  level,
+  setLevel,
+}: {
+  level: "beginner" | "intermediate" | "advanced";
+  setLevel: (level: "beginner" | "intermediate" | "advanced") => void;
+}) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -46,7 +52,7 @@ export default function LevelPicker({ level, setLevel }) {
             <button
               key={item.value}
               onClick={() => {
-                setLevel(item.value);
+                setLevel(item.value as "beginner" | "intermediate" | "advanced");
                 setOpen(false);
               }}
               className={`

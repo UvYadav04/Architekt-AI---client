@@ -1,4 +1,3 @@
-import React from 'react'
 import { useGetUserInfoQuery } from '../redux/services/userApiSlice'
 
 function useUserInfo() {

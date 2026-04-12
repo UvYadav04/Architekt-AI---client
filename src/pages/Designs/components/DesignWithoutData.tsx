@@ -1,5 +1,5 @@
 import{ useState, type Dispatch, type SetStateAction } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowUp } from "lucide-react";
 import { toast } from "sonner";
 import ErrorState from "./ErrorState";
@@ -57,7 +57,6 @@ const [phase, setPhase] = useState<string>("Initialized");
         const { done, value } = await reader.read();
         if (done) break;
           const chunk = decoder.decode(value, { stream: true });
-        console.log(chunk)
         if (chunk) {
           try {
             const parsed = JSON.parse(chunk);

@@ -1,16 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import  { useCallback, useEffect} from "react";
 import {
   ReactFlow as RF,
   Background,
-  Controls,
-  MiniMap,
   addEdge,
   useNodesState,
   useEdgesState,
   type Connection,
   type Edge,
   type Node,
-  BackgroundVariant,
   useReactFlow
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
@@ -19,33 +16,32 @@ type Props = {
   initialNodes: Node[];
     initialEdges: Edge[];
     hero?: boolean;
-designId?: string; 
   background?:"transparent" | "line" | "dotted"
 };
 
 
-function ReactFlow({ initialNodes, initialEdges, designId, hero }: Props) {
+function ReactFlow({ initialNodes, initialEdges, hero }: Props) {
   const { fitView } = useReactFlow()
   
   useEffect(() => {
-  let timeout;
+  let resizeTimeout: ReturnType<typeof setTimeout> | undefined;
 
   const handleResize = () => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      fitView({ padding: 0.2 });
-    }, 150);
-  };
+      if (resizeTimeout !== undefined) clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        fitView({ padding: 0.2 });
+      }, 150);
+    };
 
   window.addEventListener("resize", handleResize);
 
   return () => window.removeEventListener("resize", handleResize);
 }, [fitView]);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(
+  const [nodes] = useNodesState(
     initialNodes
   );
-  const [edges, setEdges, onEdgesChange] = useEdgesState(
+  const [edges, setEdges] = useEdgesState(
     initialEdges
   );
 
@@ -78,8 +74,6 @@ function ReactFlow({ initialNodes, initialEdges, designId, hero }: Props) {
                     <RF
                         nodes={nodes.map((n) => ({ ...n, draggable: false }))}
                         edges={edges}
-                        onNodesChange={onNodesChange}
-                        onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
                         fitView
                         fitViewOptions={{padding:0}}
@@ -110,8 +104,6 @@ function ReactFlow({ initialNodes, initialEdges, designId, hero }: Props) {
       <RF
         nodes={nodes}
         edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
         proOptions={{ hideAttribution: true }}

@@ -1,9 +1,27 @@
-import React, { useEffect } from "react";
+import   { useEffect } from "react";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useMyDesigns } from "../../hooks/useMyDesigns";
-import { Background, ReactFlow, ReactFlowProvider, useReactFlow ,BackgroundVariant} from "@xyflow/react";
+import { ReactFlow, ReactFlowProvider, useReactFlow, type Node, type Edge } from "@xyflow/react";
 import Logo from "./Logo";
+
+type DesignPreviewProps = {
+  nodes: Node[];
+  edges: Edge[];
+};
+
+type FlowInnerProps = {
+  nodes: Node[];
+  edges: Edge[];
+};
+
+type Design = {
+  _id: string;
+  graph: {
+    nodes: Node[];
+    edges: Edge[];
+  };
+};
 
 export default function MyDesigns() {
   const { designs } = useMyDesigns();
@@ -57,7 +75,7 @@ export default function MyDesigns() {
       {/* Designs Grid */}
       <div className="flex flex-wrap gap-6 relative z-10">
         {designs && designs.length > 0 ? (
-          designs.map((design, idx) => (
+          designs.map((design: Design) => (
             <div
               onClick={()=>navigate(`/design/${design._id}`)}
               key={design._id}
@@ -89,7 +107,7 @@ export default function MyDesigns() {
 }
 
 
-function FlowInner({ nodes, edges }) {
+function FlowInner({ nodes, edges }: FlowInnerProps) {
   const { fitView } = useReactFlow();
 
   useEffect(() => {
@@ -99,9 +117,9 @@ function FlowInner({ nodes, edges }) {
     }, 50);
 
     // resize handler
-    let resizeTimeout;
+    let resizeTimeout: ReturnType<typeof setTimeout> | undefined;
     const handleResize = () => {
-      clearTimeout(resizeTimeout);
+      if (resizeTimeout !== undefined) clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
         fitView({ padding: 0.2 });
       }, 150);
@@ -111,6 +129,7 @@ function FlowInner({ nodes, edges }) {
 
     return () => {
       clearTimeout(timeout);
+      if (resizeTimeout !== undefined) clearTimeout(resizeTimeout);
       window.removeEventListener("resize", handleResize);
     };
   }, [fitView]);
@@ -134,7 +153,7 @@ function FlowInner({ nodes, edges }) {
   );
 }
 
-function DesignPreview({ nodes, edges }) {
+function DesignPreview({ nodes, edges }: DesignPreviewProps) {
   return (
     <ReactFlowProvider>
       <FlowInner nodes={nodes} edges={edges} />
