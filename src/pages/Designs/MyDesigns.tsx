@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useMyDesigns } from "../../hooks/useMyDesigns";
 import { ReactFlow, ReactFlowProvider, useReactFlow, type Node, type Edge } from "@xyflow/react";
 import Logo from "./Logo";
+import { nodeTypes } from "../../reactFlow/nodeTypesReact";
+import Loader from "./Loader";
 
 type DesignPreviewProps = {
   nodes: Node[];
@@ -24,7 +26,7 @@ type Design = {
 };
 
 export default function MyDesigns() {
-  const { designs } = useMyDesigns();
+  const { designs,gettingDesigns } = useMyDesigns();
   const navigate = useNavigate();
   // const { fitView } = useReactFlow()
   
@@ -42,6 +44,11 @@ export default function MyDesigns() {
 
 //   return () => window.removeEventListener("resize", handleResize);
 // }, [fitView]);
+
+  // Beautiful fullscreen purple loader with animate spin
+
+  if (gettingDesigns) 
+    <Loader message={"Loading your designs..."}/>
 
   return (
     <div className="min-h-screen bg-black pt-15   text-white xl:px-10 lg:px-10 md:px-8 px-4 relative">
@@ -136,6 +143,7 @@ function FlowInner({ nodes, edges }: FlowInnerProps) {
 
   return (
     <ReactFlow
+      nodeTypes={nodeTypes}
       nodes={structuredClone(nodes)}
       edges={structuredClone(edges)}
       minZoom={0.3}

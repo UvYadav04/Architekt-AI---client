@@ -5,6 +5,7 @@ import Logo from "./Logo";
 import DesignEmptyState from "./components/DesignWithoutData";
 import { useDesign } from "../../hooks/useMyDesigns";
 import ErrorState from "./components/ErrorState";
+import Loader from "./Loader";
 
 
 // Main Component
@@ -19,7 +20,9 @@ function Design() {
   
   if (id && !designInfo && !gettingDesignInfo)
     return <ErrorState message={"Please select a valid design"} onRetry={() => navigate("/designs")} extraClass="pt-10" />
-
+  
+  if (gettingDesignInfo)
+    return <Loader message={"Getting design info...."}/>
 
   return (
     <div className="relative w-screen h-screen bg-black text-white overflow-hidden">

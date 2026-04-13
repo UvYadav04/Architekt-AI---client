@@ -25,6 +25,7 @@ const [phase, setPhase] = useState<string>("Initialized");
     const fetchStreamingQuery = async () => {
         try {
             if (processor.designing) return;
+            setQuery("")
             if(!userInfo)
             {
                 toast.info("Please login to create a design.")
@@ -45,7 +46,7 @@ const [phase, setPhase] = useState<string>("Initialized");
 
       if (!response.ok) {
         const body = await response.json();
-        throw new Error(body?.message || "Failed to collect data, please try again.");
+        throw new Error(body?.detail || "Failed to collect data, please try again.");
       }
 
       if (!response.body) throw new Error("No response body from server.");
@@ -56,15 +57,17 @@ const [phase, setPhase] = useState<string>("Initialized");
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-          const chunk = decoder.decode(value, { stream: true });
+        const chunk = decoder.decode(value, { stream: true });
         if (chunk) {
-          try {
-            const parsed = JSON.parse(chunk);
-            if (parsed.type === "phase") {
+          const parts = chunk.split("<END>")
+          for (let part of parts) {
+            try {
+              part = part.trim()
+            const parsed = JSON.parse(part);
+              if (parsed.type === "phase") {
               if (parsed?.data) setPhase(parsed.data);
             } else if (parsed.type === "final") {
               const type = parsed?.data?.type
-              console.log(type)
               if (type === "error")
                     setError("Failed to design at the moment, please try again after sometime.")
               else {
@@ -74,23 +77,22 @@ const [phase, setPhase] = useState<string>("Initialized");
                     else
                     navigate(`/designs`)
                 }
-              console.log(parsed);
             } else if (parsed.type === "error") {
               setError(JSON.stringify(parsed?.data?.message) || "Failed to generate design at the moment")
             }
           } catch (err) {
             // Ignore chunks that are not JSON
-            console.log(chunk);
           }
+         }
         }
       }
     } catch (err: any) {
-      console.log(err);
       toast.info(err?.message || "Failed");
     } finally {
       setProcessor((prev) => ({ ...prev, designing: false }));
     }
   };
+
   if(error)
     return <ErrorState message={error} onRetry={() => navigate(0)} />
 

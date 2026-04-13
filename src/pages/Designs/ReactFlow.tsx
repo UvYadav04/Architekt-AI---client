@@ -11,6 +11,7 @@ import {
   useReactFlow
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { nodeTypes } from "../../reactFlow/nodeTypesReact";
 
 type Props = {
   initialNodes: Node[];
@@ -73,7 +74,8 @@ function ReactFlow({ initialNodes, initialEdges, hero }: Props) {
                 >
                     <RF
                         nodes={nodes.map((n) => ({ ...n, draggable: false }))}
-                        edges={edges}
+                edges={edges}
+                nodeTypes={nodeTypes}
                         onConnect={onConnect}
                         fitView
                         fitViewOptions={{padding:0}}
@@ -105,6 +107,7 @@ function ReactFlow({ initialNodes, initialEdges, hero }: Props) {
         nodes={nodes}
         edges={edges}
         onConnect={onConnect}
+        nodeTypes={nodeTypes}
         fitView
         proOptions={{ hideAttribution: true }}
         className="bg-black"

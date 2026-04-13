@@ -9,7 +9,6 @@ import { jwtDecode } from "jwt-decode"
 export default function Navbar() {
     const { userInfo } = useUserInfo()
     const [open, setOpen] = useState(false)
-    // console.log(userInfo)
 
     const [login, { isLoading: loggingIn }] = useLoginMutation()
     const [logout, { isLoading: loggingOut }] = useLogoutMutation()
@@ -46,9 +45,8 @@ export default function Navbar() {
 
                     {/* DESKTOP NAV */}
                     <nav className="hidden md:flex items-center gap-6 text-white">
-                        <a href="/about" className="hover:opacity-70">About</a>
-                        <a href="https://github.com" target="_blank" className="hover:opacity-70">GitHub</a>
-                        <a href="https://linkedin.com" target="_blank" className="hover:opacity-70">LinkedIn</a>
+                        <a href="https://github.com/UvYadav04" target="_blank" className="hover:opacity-70">GitHub</a>
+                        <a href="https://www.linkedin.com/in/dinesh-yadav-264113265" target="_blank" className="hover:opacity-70">LinkedIn</a>
 
                         {userInfo ? (
                             <span className="ml-4 relative group text-black border-white bg-white px-4 py-1 rounded-md flex items-center">
@@ -113,30 +111,39 @@ export default function Navbar() {
                     {/* TOP LINKS */}
                     <div className="flex flex-col gap-4 p-4 text-white">
                         <a href="/designs" className="hover:opacity-70">My Designs</a>
-                        <a href="/about" className="hover:opacity-70">About</a>
-                        <a href="https://github.com" target="_blank" className="hover:opacity-70">GitHub</a>
-                        <a href="https://linkedin.com" target="_blank" className="hover:opacity-70">LinkedIn</a>
+                        <a href="https://github.com/UvYadav04" target="_blank" className="hover:opacity-70">GitHub</a>
+                        <a href="https://www.linkedin.com/in/dinesh-yadav-264113265" target="_blank" className="hover:opacity-70">LinkedIn</a>
                     </div>
 
                     {/* BOTTOM AUTH */}
                     <div className="p-4 border-t border-white/20 text-white">
                         {userInfo ? (
-                            <div className="text-sm flex items-center">
-                                Signed in as <b className="ml-1">{userInfo.name}</b>
-                                {loggingOut && (
-                                    <Loader2 className="ml-2 animate-spin text-red-500 w-4 h-4" />
+                            <div className="text-sm flex items-center group">
+                                <b className="ml-1">{userInfo.name}</b>
+                                {loggingOut ? (
+                                    <Loader2 className="ml-2 animate-spin text-red-500 w-5 h-5" />
+                                ) : (
+                                    <LogOut
+                                        onClick={handleLogout}
+                                        className="ml-2 p-1 rounded-full hover:bg-gray-200 transition-opacity  duration-150 text-red-500 cursor-pointer  group-hover:block hidden"
+                                    />
                                 )}
                             </div>
                         ) : (
-                            <button className="w-full bg-white text-black py-2 rounded-md flex items-center justify-center" disabled={loggingIn}>
-                                {loggingIn ? (
-                                    <>
-                                        <Loader2 className="animate-spin w-5 h-5 mr-2" /> Signing in...
-                                    </>
-                                ) : (
-                                    <>Continue with Google</>
-                                )}
-                            </button>
+                            loggingIn ?
+                                <Loader2 className="animate-spin w-5 h-5 mr-2" /> :
+                                <GoogleLogin
+                                    onSuccess={async (credentialResponse) => {
+                                        const decoded: any = jwtDecode(credentialResponse.credential || "")
+                                        handleLogin(decoded.name, decoded.email)
+                                    }}
+                                    onError={() => {
+                                        toast.error("Can't log in at the moment")
+                                    }}
+                                    theme="filled_black"
+                                    shape="pill"
+                                    size="medium"
+                                />
                         )}
                     </div>
 

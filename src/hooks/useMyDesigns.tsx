@@ -8,7 +8,7 @@ export const  useMyDesigns = ()=> {
 
 
 export const useDesign = (id:string|undefined) => {
-    const { data, isLoading } = id ? useGetDesignInfoByIdQuery(id, { skip: !id }) : {}
+    const { data, isLoading } =  useGetDesignInfoByIdQuery(id, { skip: !id }) 
     const { data: designInfo,success } = data || {}
     return {designInfo,success,gettingDesignInfo:isLoading}
 }

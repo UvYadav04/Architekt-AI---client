@@ -66,6 +66,7 @@ export default function DesignWithData({
 
   const streamResponse = async (query: string) => {
     try {
+      setThinking(true)
       setIsStreaming(true);
       currentMessageRef.current = "";
 
@@ -76,7 +77,6 @@ export default function DesignWithData({
         headers: { "Content-Type": "application/json" },
       });
 
-      console.log(res)
 
       if (!res.body) throw new Error("No response body");
 
@@ -91,24 +91,28 @@ export default function DesignWithData({
         throw new Error(message);
       }
 
+      if (thinking) setThinking(false);
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
 
+     let buffer = "";
+
       while (true) {
-        if (thinking)
-          setThinking(false)
+
         const { done, value } = await reader.read();
         if (done) break;
 
-        const chunk = decoder.decode(value, { stream: true });
-        console.log(chunk)
+        buffer += decoder.decode(value, { stream: true });
 
-        const parts = chunk.split("<END>").filter(Boolean);
-        console.log(parts)
-        for (const part of parts) {
+        const parts = buffer.split("<END>");
+        buffer = parts.pop() || "";
+
+        for (let part of parts) {
+          part = part.trim();
+          if (!part) continue;
+
           try {
             const parsed = JSON.parse(part);
-            console.log(parsed)
 
             if (parsed.type === "error") {
               setMessages((prev) => [
@@ -120,13 +124,11 @@ export default function DesignWithData({
             }
 
             if (parsed.type === "text") {
-
               currentMessageRef.current += parsed.content;
 
               setMessages((prev) => {
                 const last = prev[prev.length - 1];
 
-                // update last assistant message
                 if (last && last.role === "assistant") {
                   const updated = [...prev];
                   updated[updated.length - 1] = {
@@ -136,7 +138,6 @@ export default function DesignWithData({
                   return updated;
                 }
 
-                // create new assistant message
                 return [
                   ...prev,
                   {
@@ -152,7 +153,7 @@ export default function DesignWithData({
               return;
             }
           } catch (err) {
-            console.error("Chunk parse error", err);
+            console.error("Chunk parse error", part);
           }
         }
       }
@@ -218,10 +219,6 @@ export default function DesignWithData({
               {messages.map((msg, i) => (
                 <MessageBox msg={msg} i={i} />
               ))}
-
-              {thinking && (
-                <MessageBox msg={{ role: "assistant", content: "Thinking" }} i={-1} />
-              )}
             </div>
 
             {/* Input */}

@@ -21,8 +21,8 @@ export const designApi = createApi({
   tagTypes: ['Design'],
   endpoints: (builder) => ({
 
-    getDesignInfoById: builder.query<designResponse,string>({
-      query: (design_id:string) =>({
+    getDesignInfoById: builder.query<designResponse,string|undefined>({
+      query: (design_id) =>({
         url: `/auth/design/${design_id}`,
          credentials:'include'
        }),

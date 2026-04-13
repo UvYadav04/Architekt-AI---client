@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
   const { userInfo } = useUserInfo()
-  console.log(userInfo)
   const navigate = useNavigate()
     return (
         <section className="relative w-full lg:min-h-screen h-fit text-white overflow-hidden ">

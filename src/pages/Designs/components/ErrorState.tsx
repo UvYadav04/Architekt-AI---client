@@ -47,13 +47,6 @@ export default function ErrorState({ message, onRetry,extraClass }:{message:stri
               <RefreshCw size={16} />
               Retry
             </button>
-
-            {/* <button
-              className="text-xs text-gray-400 hover:text-white transition"
-              onClick={() => console.log("Show debug logs")}
-            >
-              View logs
-            </button> */}
           </div>
 
         </div>
