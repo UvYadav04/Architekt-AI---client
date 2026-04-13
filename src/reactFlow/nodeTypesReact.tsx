@@ -65,7 +65,7 @@ export const SystemNode = ({ data }: any) => {
             className={`${base} w-28 h-12 rounded-lg border-dashed`}
             style={commonStyle}
           >
-            <span className="opacity-80">Queue</span>
+            {/* <span className="opacity-80">Queue</span> */}
             <span className="ml-1">{label}</span>
           </div>
         );

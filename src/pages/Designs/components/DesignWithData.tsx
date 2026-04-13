@@ -84,7 +84,7 @@ export default function DesignWithData({
         let message = "Failed to respond at the moment, please try again.";
         try {
           const body = await res.json();
-          message = body?.message || message;
+          message = body?.detail || message;
         } catch (e) {
           // ignore, fallback to default message
         }
@@ -182,7 +182,6 @@ export default function DesignWithData({
 
     await streamResponse(query);
   };
-
 
   return (
     <>
