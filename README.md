@@ -1,75 +1,101 @@
-# React + TypeScript + Vite
+# 💻 ArchitektAI — Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ArchitektAI (client) is a **modern React-based frontend** for interacting with a **multi-agent system design engine**.
 
-Currently, two official plugins are available:
+It allows users to generate, visualize, and refine system architectures for any product idea using a coordinated backend of AI agents — with an **interactive graph view and context-aware chat assistant**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Key Features
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### 🏗️ System Design Generation Interface
+- Input high-level product ideas
+- Triggers backend multi-agent pipeline to generate:
+  - System architecture  
+  - Component breakdown  
+  - Service relationships  
+- Designed for fast iteration and exploration
 
-Note: This will impact Vite dev & build performances.
+---
 
-## Expanding the ESLint configuration
+### 📊 Graph-Based Architecture Visualization
+- Built using **React Flow**
+- Renders system designs as interactive graphs
+- Helps users:
+  - Understand service relationships  
+  - Explore dependencies  
+  - Navigate complex architectures  
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 💬 Context-Aware Chat Assistant
+- Integrated chat for each system design
+- Enables:
+  - Explanation of architecture decisions  
+  - Querying specific components  
+  - Guidance for extending the system  
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 💾 Persistent Design Management
+- Stores and retrieves generated designs
+- Supports:
+  - Revisiting previous systems  
+  - Iterative refinement  
+  - Continuous improvement workflows  
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 🔐 Authentication
+- Google OAuth integration
+- Secure session management
+- Personalized design access
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+### ⚡ Responsive & User-Friendly UI
+- Clean, structured layout
+- Designed for:
+  - Clarity  
+  - Ease of navigation  
+  - Smooth interaction  
+
+---
+
+### 🔄 Robust Error Handling
+- Handles API and rendering failures gracefully
+- Provides:
+  - Clear feedback  
+  - Retry mechanisms  
+- Maintains stable UX during failures
+
+---
+
+## 🏗️ UI Architecture
+
+
+---
+
+## 🛠️ Tech Stack
+
+- **React.js**
+- **TypeScript**
+- **React Flow**
+- **Tailwind CSS**
+- **ShadCN UI**
+- **Redux Toolkit / State Management**
+- **Fetch API**
+---
+
+## ▶️ Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/UvYadav04/Architekt-AI---client
+cd Architekt-AI---client
+
+---
+
+npm run dev
+
