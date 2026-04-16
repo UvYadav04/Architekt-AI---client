@@ -39,12 +39,8 @@ function ReactFlow({ initialNodes, initialEdges, hero }: Props) {
   return () => window.removeEventListener("resize", handleResize);
 }, [fitView]);
 
-  const [nodes] = useNodesState(
-    initialNodes
-  );
-  const [edges, setEdges] = useEdgesState(
-    initialEdges
-  );
+const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   // 🔗 Handle new connections
   const onConnect = useCallback(
@@ -74,8 +70,8 @@ function ReactFlow({ initialNodes, initialEdges, hero }: Props) {
                 >
                     <RF
                         nodes={nodes.map((n) => ({ ...n, draggable: false }))}
-                edges={edges}
-                nodeTypes={nodeTypes}
+                        edges={edges}
+                        nodeTypes={nodeTypes}
                         onConnect={onConnect}
                         fitView
                         fitViewOptions={{padding:0}}
@@ -108,19 +104,13 @@ function ReactFlow({ initialNodes, initialEdges, hero }: Props) {
         edges={edges}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
         fitView
         proOptions={{ hideAttribution: true }}
         className="bg-black"
         maxZoom={1}
       >
-        {/* <Background className="bg-transparent"/> */}
-
-        {/* <Controls className="!bg-gray-900 !border-gray-700" /> */}
-
-        {/* <MiniMap
-          nodeColor={() => "#555"}
-          className="!bg-gray-900 !border-gray-700"
-        /> */}
       </RF>
     </div>
   );
