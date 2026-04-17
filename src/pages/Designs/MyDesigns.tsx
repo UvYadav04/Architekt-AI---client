@@ -51,7 +51,7 @@ export default function MyDesigns() {
     <Loader message={"Loading your designs..."}/>
 
   return (
-    <div className="min-h-screen bg-black pt-15   text-white xl:px-10 lg:px-10 md:px-8 px-4 relative">
+    <div className="min-h-screen bg-black pt-15  pb-10  text-white xl:px-10 lg:px-10 md:px-8 px-4 relative">
       {/* Glow Border */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="w-full h-full rounded-2xl border border-purple-500/20 shadow-[0_0_40px_#a855f755]" />
@@ -80,7 +80,7 @@ export default function MyDesigns() {
       </h2>
 
       {/* Designs Grid */}
-      <div className="flex flex-wrap gap-6 relative z-10">
+      <div className="flex flex-wrap gap-6 relative z-10 ">
         {designs && designs.length > 0 ? (
           designs.map((design: Design) => (
             <div

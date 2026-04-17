@@ -39,7 +39,7 @@ function ReactFlow({ initialNodes, initialEdges, hero }: Props) {
   return () => window.removeEventListener("resize", handleResize);
 }, [fitView]);
 
-const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+const [nodes,_, onNodesChange] = useNodesState(initialNodes);
 const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   // 🔗 Handle new connections
