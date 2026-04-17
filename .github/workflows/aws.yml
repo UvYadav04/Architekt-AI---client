@@ -10,25 +10,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
-      # 3️⃣ Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      # 4️⃣ Build project
+      - name: Create .env file
+        run: |
+          echo "VITE_SERVER_URI=${{ secrets.VITE_SERVER_URI }}" >> .env
+          echo "VITE_GOOGLE_ID=${{ secrets.VITE_GOOGLE_ID }}" >> .env
+
       - name: Build project
         run: npm run build
 
-      # 5️⃣ Upload build to EC2
+      # ✅ Clean target directory (no sudo needed)
+      - name: Clean frontend directory
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "🧹 Cleaning old build..."
+            rm -rf /home/ubuntu/www/frontend/*
+
+      # ✅ Upload ONLY contents of dist
       - name: Upload build files
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -38,17 +50,16 @@ jobs:
           source: "dist/*"
           target: "/home/ubuntu/www/frontend"
 
-      # 6️⃣ Deploy to Nginx directory
-      - name: Deploy to Nginx
+      # ✅ Reload nginx
+      - name: Reload Nginx
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "🚀 Deploying frontend..."
-
-            # remove old build
-            sudo rm -rf /home/ubuntu/www/frontend/*
+            echo "🔄 Reloading Nginx..."
+            sudo nginx -t
+            sudo systemctl reload nginx
 
             echo "✅ Deployment complete!"
